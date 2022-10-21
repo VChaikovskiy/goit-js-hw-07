@@ -1,36 +1,41 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
-const galleryRef = document.querySelector(".gallery");
 
-function createGalleryMarkup(items) {
-  return items
-    .map(
-      (item) => `<div class="gallery__item">
-  <a class="gallery__link" href="${item.original}">
-    <img
-      class="gallery__image"
-      src="${item.preview}"
-      data-source="${item.original}"
-      alt="${item.description}"
-    />
-  </a>
-</div>`
-    )
+const basicLightbox = window.basicLightbox;
+
+function createGalleryMarkup(galleryItems) {
+  return galleryItems
+    .map(({ preview, original, description }) => {
+      return `<div class="gallery__item">
+      <a class="gallery__link" href="${original}">
+        <img
+          class="gallery__image"
+          src="${preview}"
+          data-source="${original}"
+          alt="${description}"
+        />
+      </a>
+    </div>`;
+    })
     .join("");
 }
+
+const galleryRef = document.querySelector("div.gallery");
 const addGalleryMarkup = createGalleryMarkup(galleryItems);
-galleryRef.innerHTML = addGalleryMarkup;
+galleryRef.insertAdjacentHTML("afterbegin", addGalleryMarkup);
 
 galleryRef.addEventListener("click", onImgClick);
 
 function onImgClick(evt) {
-  if (evt.target.nodeName !== "IMG") {
+  evt.preventDefault();
+
+  if (evt.target.classList.contains("gallary__image")) {
     return;
   }
-
+  const url = evt.target.dataset.source;
   const instance = basicLightbox.create(
     `
-        <img src="${evt.target.dataset.source}" width="800" height="600">
+        <img src="${url}" width="800" height="600">
     `
   );
   instance.show();
