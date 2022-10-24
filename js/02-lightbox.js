@@ -32,3 +32,4 @@ function onImgClick(event) {
 }
 
 console.log(galleryItems);
+console.log(createGalleryMarkup);
