@@ -26,24 +26,23 @@ galleryRef.insertAdjacentHTML("afterbegin", addGalleryMarkup);
 
 galleryRef.addEventListener("click", onImgClick);
 
-function onImgClick(evt) {
-  evt.preventDefault();
+function onImgClick(event) {
+  event.preventDefault();
 
-  if (evt.target.classList.contains("gallary__image")) {
+  if (!event.target.classList.contains("gallery__image")) {
     return;
   }
-  const url = evt.target.dataset.source;
+
+  const url = event.target.dataset.source;
+
   const instance = basicLightbox.create(
     `
-        <img src="${url}" >
-    `
+        <img src="${url}" >`
   );
   instance.show();
 
-  galleryRef.addEventListener("keydown", (evt) => {
-    if (evt.code === "Escape") {
-      instance.close();
-    }
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") instance.close();
   });
 }
 
